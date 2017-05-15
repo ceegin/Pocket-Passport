@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if name is not none %}
+
+
+  <h3>{{ name }} Photos</h3> -->
+      {% for photo_id, link, photo in image_urls %}
+        <img src="{{ photo }}" id="{{ photo_id }}" class="img-responsive">
+      </a>
+      <a href="{{ link }}">Source</a><br><br>
+      {% endfor %}
+{% else %}
+  <h3> Sorry, {{ search }} did not return any results. Please try another search.</h3>
+{% endif %}
+{% endblock %}

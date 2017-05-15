@@ -1,0 +1,37 @@
+{% extends 'base.html'%}
+{% block content %}
+
+  <h1 id="CityName" name="CityName" >{{ name }}</h1>
+
+
+<form action="/landmarks">
+<input type ="hidden" name ="locate" value = "{{name}}">
+<button type="submit" id="landmarks">Landmarks</button>
+</form>
+
+<form action="/food">
+<input type ="hidden" name ="locate" value = "{{name}}">
+<button type="submit" id="food">Food</button>
+</form>
+
+<form action="/coffee">
+<input type ="hidden" name ="locate" value = "{{name}}">
+<button type="submit" id="style">Coffee Shops</button>
+</form>
+
+<form action="/bars">
+<input type ="hidden" name ="locate" value = "{{name}}">
+<button type="submit" id="style">Bars</button>
+</form>
+
+<form action="/fashion">
+<input type ="hidden" name ="locate" value = "{{name}}">
+<button type="submit" id="fashion">Fashion</button>
+</form>
+
+<form action="/hikes">
+<input type ="hidden" name ="locate" value = "{{name}}">
+<button type="submit" id="hikes">Hikes</button>
+</form>
+
+{% endblock %}

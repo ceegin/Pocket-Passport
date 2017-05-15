@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pocket Passport</title>
+     <link rel="stylesheet" type="text/css" href="/static/style.css">
+     
+</head>
+
+<body>
+  {% if 'user_id' in session and 'first_name' in session %}
+        <a class="navbar-brand" href="/user/{{ session['user_id'] }}">{{ session['first_name']}}'s Profile</a>
+      {% else %}
+        <a href="/">Pocket Passport</a>
+      {% endif %}
+   
+ {% if 'user_id' in session %}
+
+        <form action="/search-results">
+          <div>
+            <input type="text" id="location" name="location" placeholder="City name">
+          </div>
+          <button type="submit" id="location-search-button" class="btn btn-default">Search location</button>
+        </form>
+      {% endif %}
+{% if "user_id" in session %}
+    <a href="/logout">Logout</a>
+{% else %}
+    <a href="/login">Login</a>
+{% endif %}
+
+  <hr>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+  {% endwith %}
+  
+{% block content %} Put your content here {% endblock %}
+
+</body>
+</html>
