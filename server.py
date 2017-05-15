@@ -171,6 +171,16 @@ def search_bars():
                        image_urls=image_urls,
                        search=search)
 
+@app.route('/nightlife')
+def search_bars():
+    """Return photo results from bar search + hikes"""
+    search = request.args.get('locate')
+    name = search
+    image_urls = get_photos(search, "nightlife")
+    return render_template("search-results.html",
+                       name=name,
+                       image_urls=image_urls,
+                       search=search)
 
 @app.route('/logout')
 def logout():
