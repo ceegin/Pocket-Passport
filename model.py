@@ -66,6 +66,19 @@ def connect_to_db(app, db_uri=None):
     db.app = app
     db.init_app(app)
 
+def example_data():
+    """Example data for testing"""
+    ron = User(first_name='Ron',
+                 last_name='Weasley',
+                 email='rweasley@gmail.com',
+                 password='magic')
+    harry = User(first_name='Harry',
+               last_name='Potter',
+               email='hpotter@gmail.com',
+               password='gryff11')
+
+    db.session.add_all([ron, harry])
+    db.session.commit()
 
 if __name__ == "__main__":
     # As a convenience, if we run this module interactively, it will leave
