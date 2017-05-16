@@ -11,6 +11,8 @@ from model import connect_to_db, db, User
 
 from flickr_functions import (get_photos)
 
+# from saving_photos import (get_pic, save_pic, remove_pic, check_saved)
+
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
@@ -86,8 +88,12 @@ def user_profile(user_id):
 
     user = User.query.get(user_id)
 
+    #gets users saved pics by ID
+    #users_saved_pics = get_pic(user_id)
+
     return render_template("user-profile.html",
                            user=user)
+                           #users_saved_pics=users_saved_pics)
 
 
 @app.route('/search-results')
@@ -171,8 +177,9 @@ def search_bars():
                        image_urls=image_urls,
                        search=search)
 
+
 @app.route('/nightlife')
-def search_bars():
+def search_nightlife():
     """Return photo results from bar search + hikes"""
     search = request.args.get('locate')
     name = search
@@ -181,6 +188,46 @@ def search_bars():
                        name=name,
                        image_urls=image_urls,
                        search=search)
+
+
+@app.route('/photo-info/<int:photo_id>')
+def get_photo_info(photo_id):
+    """Returns photo and additional information page"""
+
+    img_src = get_photos(search, button)
+
+    # saved = check_saved(photo_id)
+
+    return render_template("photo-info.html",
+                             img_src=img_src,
+                             photo_id=photo_id)
+                            #saved=saved)
+
+
+# @app.route('/save-pic', methods=["POST"])
+# def save_to_db():
+#     """Saves photo to database."""
+
+#     img_src = request.form.get("pic")
+#     photo_id = request.form.get("id")
+#     user_id = session['user_id']
+
+#     save_pic(img_src, photo_id, user_id)
+
+#     return "OK"
+
+
+# @app.route('/remove-pic', methods=["POST"])
+# def remove_photo():
+#     """Removes photo from database."""
+
+#     photo_id = request.form.get("id")
+#     user_id = session['user_id']
+
+#     remove_pic(photo_id, user_id)
+
+#     return "OK"
+
 
 @app.route('/logout')
 def logout():

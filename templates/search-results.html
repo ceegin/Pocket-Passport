@@ -4,11 +4,13 @@
 {% if name is not none %}
 
 
-  <h3>{{ name }} Photos</h3> -->
-      {% for photo_id, link, photo in image_urls %}
-        <img src="{{ photo }}" id="{{ photo_id }}" class="img-responsive">
+  <h3>{{ name }} Photos</h3> 
+      {% for photo_id, url, photo in image_urls %}
+        <a href="/photo-info/{{ photo_id}}">
+        <img src="{{ photo }}" id="{{ photo_id }}">
+      
+      <a href="{{ url }}">Source</a><br><br>
       </a>
-      <a href="{{ link }}">Source</a><br><br>
       {% endfor %}
 {% else %}
   <h3> Sorry, {{ search }} did not return any results. Please try another search.</h3>
