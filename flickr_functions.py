@@ -37,4 +37,3 @@ def get_photos(search, button):
     return image_urls
 
 
-

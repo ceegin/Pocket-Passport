@@ -17,10 +17,12 @@ app.jinja_env.undefined = StrictUndefined
 def get_pic(user_id):
     """Shows users saved photos"""
 
+    # find all photos saved by the user id
     saved_pics = SavedPhoto.query.filter(SavedPhoto.user_id == user_id).all()
 
     users_saved_pics = []
 
+    # add photo to user's list of saved pics
     for saved_pic in saved_pics:
         users_saved_pics.append({'photo_id': saved_pic.photo_id,
                                   'img_src': saved_pic.savedphoto.img_src,
