@@ -1,5 +1,3 @@
-import os
-
 from flask import (Flask, render_template, redirect, flash,
                    session, request)
 
@@ -24,6 +22,9 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/')
 def index():
     """Homepage."""
+
+    if session.get('user_id'):
+        return redirect("/user/%s" % session['user_id'])
 
     return render_template("homepage.html")
 
@@ -197,14 +198,12 @@ def search_nightlife():
 @app.route('/photo-info/<int:photo_id>')
 def get_photo_info(photo_id):
     """Returns photo and additional information page"""
-
-    # query the savedphoto for photoid 
-    # saved = check_saved(photo_id)
+    saved = check_saved(photo_id)
     img_src = get_url(photo_id)
     return render_template("photo-info.html",
                            photo_id=photo_id,
-                           img_src=img_src)
-                             # saved=saved)
+                           img_src=img_src,
+                           saved=saved)
 
 
 @app.route('/save-pic', methods=["POST"])
@@ -227,7 +226,7 @@ def remove_photo():
     photo_id = request.form.get("id")
     user_id = session['user_id']
 
-    remove_pic(photo_id, user_id)
+    remove_pic(photo_id, int(user_id))
 
     return "OK"
 

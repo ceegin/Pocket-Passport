@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block body %}
 
+<h2 id="photo-id">{{ photo_id }}<h3>
+
 <img src="{{ img_src }}"><br>
   {% if saved is none %}
     <button type="button" id="like">Like</button><br>
@@ -15,7 +17,41 @@
          $("button#unlike").on("click", removePic)
     }
 
+    function savePic(evt) {
 
+    var photoInfo = {
+      "src": $("img.photo-info").attr("src"),
+      "id": $("h2#photo-id").html()
+    };
+
+    $.post("/save-pic",
+           photoInfo,
+           likePic
+           );
+
+    }
+
+     $("button#like").on("click", savePic)
+
+  function unLikePic() {
+    $("button#unlike").replaceWith('<button type="button" id="like"></button>');
+    $("button#like").on("click", savePic)
+  }
+
+  function removePic(evt) {
+
+    var photoId = {
+      "id": $("h2#photo-id").html()
+    };
+
+    $.post("/remove-pic",
+           photoId,
+           unLikePic
+           );
+
+  }
+
+  $("button#unlike").on("click", removePic)
 </script>
 
 {% endblock %}

@@ -3,7 +3,7 @@ from jinja2 import StrictUndefined
 
 from flask import (Flask, session)
 
-from model import User, SavedPhoto, db
+from model import SavedPhoto, db
 
 app = Flask(__name__)
 
@@ -37,8 +37,8 @@ def save_pic(img_src, photo_id, user_id):
 
     #checks if photo is there, if not add to the database
     if not SavedPhoto.query.filter(SavedPhoto.photo_id == photo_id).all():
-        pic = SavedPhoto(img_src=img_src, photo_id=photo_id)
-        db.session.add(pic)
+        new_pic = SavedPhoto(img_src=img_src, photo_id=photo_id)
+        db.session.add(new_pic)
 
     db.session.add(pic)
     db.session.commit()
@@ -55,7 +55,6 @@ def remove_pic(photo_id, user_id):
 def check_saved(photo_id):
     """Check if photo has been saved by current user."""
 
-    saved = SavedPhoto.query.filter(SavedPhoto.user_id == session['user_id'],
-                                    SavedPhoto.photo_id == photo_id).first()
+    saved = SavedPhoto.query.filter(SavedPhoto.user_id == int(session['user_id']), SavedPhoto.photo_id == str(photo_id)).first()
 
     return saved
