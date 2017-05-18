@@ -1,6 +1,4 @@
 # functions for users to save photos to users' profile to be used in server.py
-import os
-
 from jinja2 import StrictUndefined
 
 from flask import (Flask, session)
@@ -25,9 +23,9 @@ def get_pic(user_id):
     # add photo to user's list of saved pics
     for saved_pic in saved_pics:
         users_saved_pics.append({'photo_id': saved_pic.photo_id,
-                                  'img_src': saved_pic.savedphoto.img_src,
-                                  'user_id': saved_pic.user_id
-                                  })
+                                 'img_src': saved_pic.savedphoto.img_src,
+                                 'user_id': saved_pic.user_id
+                                 })
 
     return users_saved_pics
 
@@ -58,7 +56,6 @@ def check_saved(photo_id):
     """Check if photo has been saved by current user."""
 
     saved = SavedPhoto.query.filter(SavedPhoto.user_id == session['user_id'],
-                                   SavedPhoto.photo_id == photo_id).first()
+                                    SavedPhoto.photo_id == photo_id).first()
 
     return saved
-

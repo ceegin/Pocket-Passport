@@ -1,5 +1,21 @@
 {% extends 'base.html' %}
-{% block content %}
-{{ photo_id }}
+{% block body %}
+
+<img src="{{ img_src }}"><br>
+  {% if saved is none %}
+    <button type="button" id="like">Like</button><br>
+  {% elif saved is not none %}
+    <button type="button" id="unlike">Unlike</button><br>
+  {% endif %}
+
+<script>
+
+    function likePic() {
+        $("button#like").replaceWith('<button type="button" id="unlike">');
+         $("button#unlike").on("click", removePic)
+    }
+
+
+</script>
 
 {% endblock %}

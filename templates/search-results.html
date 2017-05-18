@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block content %}
+{% block body %}
 
 {% if name is not none %}
 
@@ -8,11 +8,7 @@
       {% for photo_id, url, photo in image_urls %}
         <a href="/photo-info/{{ photo_id}}">
         <img src="{{ photo }}" id="{{ photo_id }}">
-      {% if saved is none %}
-    <button type="button" id="like">Like</button><br>
-  {% elif saved is not none %}
-    <button type="button" id="unlike">Unlike</button><br>
-  {% endif %}
+      <a href="{{ url }}">Photo Source</a><br><br>
       </a>
 
       {% endfor %}

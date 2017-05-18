@@ -9,7 +9,7 @@ from jinja2 import StrictUndefined
 
 from model import connect_to_db, db, User
 
-from flickr_functions import (get_photos)
+from flickr_functions import (get_photos, get_url)
 
 from saving_photos import (get_pic, save_pic, remove_pic, check_saved)
 
@@ -102,8 +102,10 @@ def search_city():
 
     search = request.args.get('location')
     name = search
+
     return render_template("categories.html",
-                            name=name)
+                           name=name
+                           )
 
 
 @app.route('/food')
@@ -115,9 +117,9 @@ def search_food():
     # returns search location plus the tags
     image_urls = get_photos(search, "food, restaurants")
     return render_template("search-results.html",
-                            name=name,
-                            image_urls=image_urls,
-                            search=search)
+                           name=name,
+                           image_urls=image_urls,
+                           search=search)
 
 
 @app.route('/landmarks')
@@ -127,9 +129,9 @@ def search_landmarks():
     name = search
     image_urls = get_photos(search, "landmarks, sights")
     return render_template("search-results.html",
-                       name=name,
-                       image_urls=image_urls,
-                       search=search)
+                           name=name,
+                           image_urls=image_urls,
+                           search=search)
 
 
 @app.route('/fashion')
@@ -139,9 +141,9 @@ def search_fashion():
     name = search
     image_urls = get_photos(search, "style, fashion")
     return render_template("search-results.html",
-                       name=name,
-                       image_urls=image_urls,
-                       search=search)
+                           name=name,
+                           image_urls=image_urls,
+                           search=search)
 
 
 @app.route('/coffee')
@@ -151,9 +153,9 @@ def search_coffee():
     name = search
     image_urls = get_photos(search, "coffee, cafe")
     return render_template("search-results.html",
-                       name=name,
-                       image_urls=image_urls,
-                       search=search)
+                           name=name,
+                           image_urls=image_urls,
+                           search=search)
 
 
 @app.route('/hikes')
@@ -163,10 +165,10 @@ def search_hikes():
     name = search
     image_urls = get_photos(search, "hiking, trails")
     return render_template("search-results.html",
-                       name=name,
-                       image_urls=image_urls,
-                       search=search)
-    
+                           name=name,
+                           image_urls=image_urls,
+                           search=search)
+
 
 @app.route('/bars')
 def search_bars():
@@ -175,9 +177,9 @@ def search_bars():
     name = search
     image_urls = get_photos(search, "bars, clubs")
     return render_template("search-results.html",
-                       name=name,
-                       image_urls=image_urls,
-                       search=search)
+                           name=name,
+                           image_urls=image_urls,
+                           search=search)
 
 
 @app.route('/nightlife')
@@ -187,22 +189,22 @@ def search_nightlife():
     name = search
     image_urls = get_photos(search, "nightlife")
     return render_template("search-results.html",
-                       name=name,
-                       image_urls=image_urls,
-                       search=search)
+                           name=name,
+                           image_urls=image_urls,
+                           search=search)
 
 
 @app.route('/photo-info/<int:photo_id>')
 def get_photo_info(photo_id):
     """Returns photo and additional information page"""
 
-    # img_src = get_photos(search, button)
-
-    photo_id = request.form.get("id")
-
+    # query the savedphoto for photoid 
+    # saved = check_saved(photo_id)
+    img_src = get_url(photo_id)
     return render_template("photo-info.html",
-                             # img_src=img_src,
-                             photo_id=photo_id)
+                           photo_id=photo_id,
+                           img_src=img_src)
+                             # saved=saved)
 
 
 @app.route('/save-pic', methods=["POST"])
