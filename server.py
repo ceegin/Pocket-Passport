@@ -11,6 +11,8 @@ from flickr_functions import (get_photos, get_url)
 
 from saving_photos import (get_pic, save_pic, remove_pic, check_saved)
 
+import os
+
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
@@ -210,11 +212,13 @@ def get_photo_info(photo_id):
 def save_to_db():
     """Saves photo to database."""
 
-    img_src = request.form.get("pic")
+    img_src = request.form.get("src")
     photo_id = request.form.get("id")
     user_id = session['user_id']
+    print "~~~~~~~~~**********~~~~~~~~~~~~**************~~~~~~~~~~~"
+    print img_src, photo_id, user_id
 
-    save_pic(img_src, photo_id, user_id)
+    save_pic(img_src=img_src, photo_id=photo_id, user_id=int(user_id))
 
     return "OK"
 
@@ -253,4 +257,6 @@ if __name__ == "__main__":
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    app.run(host="0.0.0.0")
+    PORT = int(os.environ.get("PORT", 5001))
+    app.run(port=PORT, host='0.0.0.0')
+

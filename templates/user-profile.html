@@ -1,8 +1,16 @@
 {% extends 'base.html' %}
 {% block body %}
 
+
   <h1>{{ user.email }}</h1>
 
   <p>Welcome back {{ user.first_name }}!</p>
 
+{% for users_saved_pics in users_saved_pics %}
+<div>
+  <a href="/photo-info/{{ users_saved_pics['photo_id'] }}">
+    <img src="{{ users_saved_pics['img_src'] }}" 
+    id="{{ users_saved_pics['photo_id'] }}"></a>
+</div>
+{% endfor %}
 {% endblock %}

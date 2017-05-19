@@ -23,7 +23,7 @@ def get_pic(user_id):
     # add photo to user's list of saved pics
     for saved_pic in saved_pics:
         users_saved_pics.append({'photo_id': saved_pic.photo_id,
-                                 'img_src': saved_pic.savedphoto.img_src,
+                                 'img_src': saved_pic.img_src,
                                  'user_id': saved_pic.user_id
                                  })
 
@@ -33,14 +33,14 @@ def get_pic(user_id):
 def save_pic(img_src, photo_id, user_id):
     """Save photo to database."""
 
-    pic = SavedPhoto(user_id=user_id, photo_id=photo_id)
+    # pic = SavedPhoto(user_id=user_id, photo_id=photo_id)
 
     #checks if photo is there, if not add to the database
     if not SavedPhoto.query.filter(SavedPhoto.photo_id == photo_id).all():
-        new_pic = SavedPhoto(img_src=img_src, photo_id=photo_id)
+        new_pic = SavedPhoto(user_id=int(user_id), img_src=img_src, photo_id=photo_id)
         db.session.add(new_pic)
 
-    db.session.add(pic)
+    # db.session.add(pic)
     db.session.commit()
 
 

@@ -3,42 +3,47 @@
 
 <h2 id="photo-id">{{ photo_id }}<h3>
 
-<img src="{{ img_src }}"><br>
+<img src="{{ img_src }}" class="photo-info"><br>
   {% if saved is none %}
     <button type="button" id="like">Like</button><br>
   {% elif saved is not none %}
     <button type="button" id="unlike">Unlike</button><br>
   {% endif %}
-
+<script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
 <script>
 
-    function likePic() {
-        $("button#like").replaceWith('<button type="button" id="unlike">');
+    function likeButton() {
+        $("button#like").replaceWith('<button type="button" id="unlike">Unlike</button>');
          $("button#unlike").on("click", removePic)
     }
 
     function savePic(evt) {
+        
+        var photoInfo = {
+            "src": $("img.photo-info").attr("src"),
+            "id": $("h2#photo-id").html()
+        };
+        console.log(photoInfo);
 
-    var photoInfo = {
-      "src": $("img.photo-info").attr("src"),
-      "id": $("h2#photo-id").html()
-    };
+        $.post("/save-pic",
+               photoInfo,
+               likeButton
+               );
 
-    $.post("/save-pic",
-           photoInfo,
-           likePic
-           );
-
-    }
+        }
 
      $("button#like").on("click", savePic)
 
-  function unLikePic() {
-    $("button#unlike").replaceWith('<button type="button" id="like"></button>');
+  function unLikeButton() {
+    $("button#unlike").replaceWith('<button type="button" id="like">Like</button>');
     $("button#like").on("click", savePic)
   }
 
   function removePic(evt) {
+    console.log('in removePic function')
 
     var photoId = {
       "id": $("h2#photo-id").html()
@@ -46,12 +51,13 @@
 
     $.post("/remove-pic",
            photoId,
-           unLikePic
+           unLikeButton
            );
 
   }
 
   $("button#unlike").on("click", removePic)
+
 </script>
 
 {% endblock %}
