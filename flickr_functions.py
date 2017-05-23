@@ -12,13 +12,19 @@ flickr = flickrapi.FlickrAPI(api_key, api_secret)
 URL_TEMPLATE = "https://farm{}.staticflickr.com/{}/{}_{}.jpg"
 
 
+def keep_photo(search):
+    """Returns photo if meets criteria"""
+    pass
+
+
 def get_photos(search, button):
     """Get URL for photo"""
 
     print "i am in " + button
 
     # using flickr api search method
-    photos = flickr.photos.search(text=search, per_page='12', format='json', tags=button, tag_mode='all')
+    photos = flickr.photos.search(text=search, per_page=20, pages=3,
+                                  format='json', tags=button, tag_mode='all')
     # converts JSON string to dictionary
     photo_data = json.loads(photos)
     # builds url by appending photo_id, user_id to pass into flickr url template
@@ -55,3 +61,4 @@ def get_url(photo_id):
     photo_url = URL_TEMPLATE.format(farm_id, server_id, photo_id, photo_secret)
 
     return photo_url
+

@@ -20,7 +20,7 @@ def get_pic(user_id):
 
     users_saved_pics = []
 
-    # add photo to user's list of saved pics
+    # add photo to user's list of saved pics including photo id, user id, and img src
     for saved_pic in saved_pics:
         users_saved_pics.append({'photo_id': saved_pic.photo_id,
                                  'img_src': saved_pic.img_src,

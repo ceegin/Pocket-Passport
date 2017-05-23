@@ -1,5 +1,4 @@
-from flask import (Flask, render_template, redirect, flash,
-                   session, request)
+from flask import (Flask, render_template, redirect, flash, session, request)
 
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -12,6 +11,8 @@ from flickr_functions import (get_photos, get_url)
 from saving_photos import (get_pic, save_pic, remove_pic, check_saved)
 
 import os
+
+# google_maps_api_key = os.environ['GOOGLE_KEY']
 
 app = Flask(__name__)
 
@@ -107,7 +108,8 @@ def search_city():
     name = search
 
     return render_template("categories.html",
-                           name=name
+                           name=name,
+                           search=search
                            )
 
 
@@ -215,8 +217,6 @@ def save_to_db():
     img_src = request.form.get("src")
     photo_id = request.form.get("id")
     user_id = session['user_id']
-    print "~~~~~~~~~**********~~~~~~~~~~~~**************~~~~~~~~~~~"
-    print img_src, photo_id, user_id
 
     save_pic(img_src=img_src, photo_id=photo_id, user_id=int(user_id))
 

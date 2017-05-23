@@ -22,10 +22,6 @@ class User(db.Model):
 
         return "<User user_id=%s email=%s>" % (self.user_id, self.email)
 
-    @classmethod
-    def by_id(cls, user_id):
-        return cls.query.filter_by(user_id=user_id).first()
-
 
 class SavedPhoto(db.Model):
     """User's saved photos."""
@@ -48,9 +44,6 @@ class SavedPhoto(db.Model):
 
         return "<Photo photo_id=%s img_src=%s>" % (self.photo_id, self.img_src)
 
-    @classmethod
-    def by_id(cls, photo_id):
-        return cls.query.filter_by(photo_id=photo_id).first()
 
 ################################################################################
 # Helper functions
@@ -66,16 +59,17 @@ def connect_to_db(app, db_uri=None):
     db.app = app
     db.init_app(app)
 
+
 def example_data():
     """Example data for testing"""
     ron = User(first_name='Ron',
-                 last_name='Weasley',
-                 email='rweasley@gmail.com',
-                 password='magic')
+               last_name='Weasley',
+               email='rweasley@gmail.com',
+               password='magic')
     harry = User(first_name='Harry',
-               last_name='Potter',
-               email='hpotter@gmail.com',
-               password='gryff11')
+                 last_name='Potter',
+                 email='hpotter@gmail.com',
+                 password='gryff11')
 
     db.session.add_all([ron, harry])
     db.session.commit()
