@@ -14,9 +14,30 @@
   src="https://code.jquery.com/jquery-3.2.1.js">
 </script>
 
-<h3>Photo Location: <a href="http://maps.google.com/?q={{ lat }}+{{ lng }} ">{{ lat }}+{{ lng }}</a></h3>
+<h3>Location: <a href="http://maps.google.com/?q={{ address }} ">{{ address }}</a></h3>
 
-<h3>Yelp link: {{ yelplink }}</h3>
+<input id="origin-input" class="controls" type="text"
+  placeholder="Enter an origin location">
+
+<input id="destination-input" class="controls" type="text"
+  value="{{ address }}" readonly>
+
+<div id="mode-selector" class="controls">
+  <input type="radio" name="type" id="changemode-walking" checked="checked">
+  <label for="changemode-walking">Walking</label>
+
+  <input type="radio" name="type" id="changemode-transit">
+  <label for="changemode-transit">Transit</label>
+
+  <input type="radio" name="type" id="changemode-driving">
+  <label for="changemode-driving">Driving</label>
+</div>
+
+<div id="map"></div><br><br>
+</div>
+
+<h3>Yelp link: <a href="{{ yelplink }}">Here</a></h3>
+
 <script>
     function likeButton() {
         $("button#like").replaceWith('<button type="button" id="unlike">Unlike</button>');
@@ -50,6 +71,99 @@
            );
   }
   $("button#unlike").on("click", removePic)
+
+// using GoogleMaps given code 
+function initMap() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+      mapTypeControl: false,
+      center: {lat: {{ lat }}, lng: {{ lng }}},
+      zoom: 13
+    });
+
+    new AutocompleteDirectionsHandler(map);
+  }
+
+  function AutocompleteDirectionsHandler(map) {
+    this.map = map;
+    this.originPlaceId = null;
+    this.destinationPlaceId = null;
+    this.travelMode = 'WALKING';
+    var originInput = document.getElementById('origin-input');
+    var destinationInput = document.getElementById('destination-input');
+    var modeSelector = document.getElementById('mode-selector');
+    this.directionsService = new google.maps.DirectionsService;
+    this.directionsDisplay = new google.maps.DirectionsRenderer;
+    this.directionsDisplay.setMap(map);
+
+    var originAutocomplete = new google.maps.places.Autocomplete(
+        originInput, {placeIdOnly: true});
+    var destinationAutocomplete = new google.maps.places.Autocomplete(
+        destinationInput, {placeIdOnly: true});
+
+    this.setupClickListener('changemode-walking', 'WALKING');
+    this.setupClickListener('changemode-transit', 'TRANSIT');
+    this.setupClickListener('changemode-driving', 'DRIVING');
+
+    this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
+    this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
+
+    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originInput);
+    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(destinationInput);
+    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(modeSelector);
+  }
+
+
+  AutocompleteDirectionsHandler.prototype.setupClickListener = function(id, mode) {
+    var radioButton = document.getElementById(id);
+    var me = this;
+    radioButton.addEventListener('click', function() {
+      me.travelMode = mode;
+      me.route();
+    });
+  };
+
+  AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(autocomplete, mode) {
+    var me = this;
+    autocomplete.bindTo('bounds', this.map);
+    autocomplete.addListener('place_changed', function() {
+      var place = autocomplete.getPlace();
+      if (!place.place_id) {
+        window.alert("Please select an option from the dropdown list.");
+        return;
+      }
+      if (mode === 'ORIG') {
+        me.originPlaceId = place.place_id;
+      } else {
+        me.destinationPlaceId = place.place_id;
+      }
+      me.route();
+    });
+
+  };
+
+  AutocompleteDirectionsHandler.prototype.route = function() {
+    if (!this.originPlaceId || !this.destinationPlaceId) {
+      return;
+    }
+    var me = this;
+
+    this.directionsService.route({
+      origin: {'placeId': this.originPlaceId},
+      destination: {'placeId': this.destinationPlaceId},
+      travelMode: this.travelMode
+    }, function(response, status) {
+      if (status === 'OK') {
+        me.directionsDisplay.setDirections(response);
+      } else {
+        window.alert('Directions request failed due to ' + status);
+      }
+    });
+  };
+
+</script>
+
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places&callback=initMap">
 </script>
 
 {% endblock %}

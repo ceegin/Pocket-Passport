@@ -13,7 +13,10 @@ from saving_photos import (get_pic, save_pic, remove_pic, check_saved)
 import os
 
 import requests
-# google_maps_api_key = os.environ['GOOGLE_KEY']
+
+google_maps_api_key = os.environ['GOOGLE_KEY']
+
+from geocode_functions import reverse_geo_location
 
 app = Flask(__name__)
 
@@ -203,37 +206,41 @@ def search_nightlife():
 @app.route('/photo-info/<int:photo_id>')
 def get_photo_info(photo_id):
     """Returns photo and additional information page"""
+    # check if photo is saved to the user's profile
     saved = check_saved(photo_id)
+    # use flickr api getinfo to get url of photo
     img_src = get_url(photo_id)
+    # use flickr api getlocation to get location data of photo
     location = get_location(photo_id)
 
+    # get lat and lng from flickr location api call
     lat = location['lat']
-    print lat
     lng = location['lng']
-    print lng
 
+    address = reverse_geo_location(lat, lng)
     access_token = get_yelp_access_token()
-
+    # use yelp api to search business info from lat/lng data
     url = 'https://api.yelp.com/v3/businesses/search'
     headers = {'Authorization': 'bearer %s' % access_token}
     params = {'limit': 1, 'sort_by': 'rating', 'radius': 40000, 'latitude': lat, 'longitude': lng}
 
     resp = requests.get(url=url, params=params, headers=headers)
-
+    # get result in json format
     result = resp.json()['businesses']
     if len(result) == 0:
         yelplink = "No yelp data available"
     else:
         yelplink = result[0]['url']
 
-    print yelplink
     return render_template("photo-info.html",
                            photo_id=photo_id,
                            img_src=img_src,
                            saved=saved,
                            lat=lat,
                            lng=lng,
-                           yelplink=yelplink
+                           yelplink=yelplink,
+                           address=address,
+                           google_maps_api_key=google_maps_api_key
                            )
 
 
@@ -287,26 +294,6 @@ def get_yelp_access_token():
 
     return access_token
 
-
-# @app.route("/yelp_search.json", methods=["GET"])
-# def yelp_business_search():
-#     lat = request.args.get("lat")
-#     lng = request.args.get("lng")
-#     access_token = get_yelp_access_token()
-
-#     url = 'https://api.yelp.com/v3/businesses/search'
-#     headers = {'Authorization': 'bearer %s' % access_token}
-#     params = {'limit': 1, 'term': 'Restaurant', 'sort_by': 'rating', 'latitude': lat, 'longitude': lng}
-
-#     resp = requests.get(url=url, params=params, headers=headers)
-
-#     result = resp.json()['businesses']
-
-#     # for r in result:
-#     #     result_list.append(r.get("name"))
-
-#     print result
-#     return jsonify(result)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
