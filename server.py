@@ -6,12 +6,13 @@ from jinja2 import StrictUndefined
 
 from model import connect_to_db, db, User
 
-from flickr_functions import (get_photos, get_url)
+from flickr_functions import (get_photos, get_url, get_location)
 
 from saving_photos import (get_pic, save_pic, remove_pic, check_saved)
 
 import os
 
+import requests
 # google_maps_api_key = os.environ['GOOGLE_KEY']
 
 app = Flask(__name__)
@@ -204,10 +205,36 @@ def get_photo_info(photo_id):
     """Returns photo and additional information page"""
     saved = check_saved(photo_id)
     img_src = get_url(photo_id)
+    location = get_location(photo_id)
+
+    lat = location['lat']
+    print lat
+    lng = location['lng']
+    print lng
+
+    access_token = get_yelp_access_token()
+
+    url = 'https://api.yelp.com/v3/businesses/search'
+    headers = {'Authorization': 'bearer %s' % access_token}
+    params = {'limit': 1, 'sort_by': 'rating', 'radius': 40000, 'latitude': lat, 'longitude': lng}
+
+    resp = requests.get(url=url, params=params, headers=headers)
+
+    result = resp.json()['businesses']
+    if len(result) == 0:
+        yelplink = "No yelp data available"
+    else:
+        yelplink = result[0]['url']
+
+    print yelplink
     return render_template("photo-info.html",
                            photo_id=photo_id,
                            img_src=img_src,
-                           saved=saved)
+                           saved=saved,
+                           lat=lat,
+                           lng=lng,
+                           yelplink=yelplink
+                           )
 
 
 @app.route('/save-pic', methods=["POST"])
@@ -244,6 +271,42 @@ def logout():
 
     return redirect("/")
 
+
+def get_yelp_access_token():
+    """Get yelp business api access token"""
+    app_id = '1aZ_5OVCRb0P7v3unYNIqA'
+    app_secret = 'gXJgDy4eUkJZB4MM3vBWX1w7SHaeRiHGNhcL3cIv48wE9AFG8eT4IYPAtMZ5vOJm'
+
+    data = {'grant_type': 'client_credentials',
+            'client_id': app_id,
+            'client_secret': app_secret}
+
+    token = requests.post('https://api.yelp.com/oauth2/token', data=data)
+
+    access_token = token.json()['access_token']
+
+    return access_token
+
+
+# @app.route("/yelp_search.json", methods=["GET"])
+# def yelp_business_search():
+#     lat = request.args.get("lat")
+#     lng = request.args.get("lng")
+#     access_token = get_yelp_access_token()
+
+#     url = 'https://api.yelp.com/v3/businesses/search'
+#     headers = {'Authorization': 'bearer %s' % access_token}
+#     params = {'limit': 1, 'term': 'Restaurant', 'sort_by': 'rating', 'latitude': lat, 'longitude': lng}
+
+#     resp = requests.get(url=url, params=params, headers=headers)
+
+#     result = resp.json()['businesses']
+
+#     # for r in result:
+#     #     result_list.append(r.get("name"))
+
+#     print result
+#     return jsonify(result)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point

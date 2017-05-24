@@ -12,26 +12,27 @@ flickr = flickrapi.FlickrAPI(api_key, api_secret)
 URL_TEMPLATE = "https://farm{}.staticflickr.com/{}/{}_{}.jpg"
 
 
-def keep_photo(search):
-    """Returns photo if meets criteria"""
-    pass
-
-
 def get_photos(search, button):
     """Get URL for photo"""
 
     print "i am in " + button
 
     # using flickr api search method
-    photos = flickr.photos.search(text=search, per_page=20, pages=3,
-                                  format='json', tags=button, tag_mode='all')
+    photos = flickr.photos.search(text=search, per_page="20", has_geo="1",
+                                  format='json', tags=button, tag_mode='all',
+                                  accuracy='16')
     # converts JSON string to dictionary
     photo_data = json.loads(photos)
+
+    # filters results to prevent multiple results from one user
+    # existing_users = set()
+
     # builds url by appending photo_id, user_id to pass into flickr url template
     image_urls = []
     for data in range(len(photo_data['photos']['photo'])):
-        photo_id = photo_data['photos']['photo'][data]['id']
         user_id = photo_data['photos']['photo'][data]['owner']
+        # if user_id not in existing_users:
+        photo_id = photo_data['photos']['photo'][data]['id']
         photo_source_template = "https://www.flickr.com/photos/{}/{}/"
         photo_source_url = photo_source_template.format(user_id, photo_id)
 
@@ -41,6 +42,7 @@ def get_photos(search, button):
 
         photo_url = URL_TEMPLATE.format(farm_id, server_id, photo_id, photo_secret)
         image_urls.append([photo_id, photo_source_url, photo_url])
+        # existing_users.add(user_id)
 
     return image_urls
 
@@ -62,3 +64,17 @@ def get_url(photo_id):
 
     return photo_url
 
+
+def get_location(photo_id):
+    """Get lat/lng of photo"""
+
+    location_data = {}
+
+    data = flickr.photos.geo.getLocation(photo_id=photo_id, format='json')
+    location_info = json.loads(data)
+
+    location_data['lat'] = location_info['photo']['location']['latitude']
+    location_data['lng'] = location_info['photo']['location']['longitude']
+    location_data['name'] = location_info['photo']['location']['locality']['_content']
+
+    return location_data

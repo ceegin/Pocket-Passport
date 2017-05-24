@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block body %}
 
+
 <h2 id="photo-id">{{ photo_id }}<h3>
 
 <img src="{{ img_src }}" class="photo-info"><br>
@@ -13,13 +14,14 @@
   src="https://code.jquery.com/jquery-3.2.1.js">
 </script>
 
-<script>
+<h3>Photo Location: <a href="http://maps.google.com/?q={{ lat }}+{{ lng }} ">{{ lat }}+{{ lng }}</a></h3>
 
+<h3>Yelp link: {{ yelplink }}</h3>
+<script>
     function likeButton() {
         $("button#like").replaceWith('<button type="button" id="unlike">Unlike</button>');
          $("button#unlike").on("click", removePic)
     }
-
     function savePic(evt) {
         
         var photoInfo = {
@@ -27,38 +29,27 @@
             "id": $("h2#photo-id").html()
         };
         console.log(photoInfo);
-
         $.post("/save-pic",
                photoInfo,
                likeButton
                );
-
         }
-
      $("button#like").on("click", savePic)
-
   function unLikeButton() {
     $("button#unlike").replaceWith('<button type="button" id="like">Like</button>');
     $("button#like").on("click", savePic)
   }
-
   function removePic(evt) {
     console.log('in removePic function')
-
     var photoId = {
       "id": $("h2#photo-id").html()
     };
-
     $.post("/remove-pic",
            photoId,
            unLikeButton
            );
-
   }
-
   $("button#unlike").on("click", removePic)
-
 </script>
-
 
 {% endblock %}

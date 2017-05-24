@@ -18,6 +18,7 @@ def geo_code_location(city):
     if geocode_result == []:
         return None
 
+    # gets latitude and longitude points
     return (geocode_result[0]['geometry']['location']['lat'],
             geocode_result[0]['geometry']['location']['lng']
             )
@@ -25,6 +26,7 @@ def geo_code_location(city):
 
 def reverse_geo_location(lat, lng):
     """Convert latitude and longitude to address using reverse geocode api method"""
+    # using reverse geocode api method to get formatted address
     reverse_geo_result = gmaps.reverse_geocode((lat, lng))
 
     return reverse_geo_result[0]['formatted_address']
