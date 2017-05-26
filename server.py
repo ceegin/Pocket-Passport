@@ -136,7 +136,7 @@ def search_landmarks():
     """Return photo results from location search + landmarks"""
     search = request.args.get('locate')
     name = search
-    image_urls = get_photos(search, "landmarks, sights")
+    image_urls = get_photos(search, "landmarks")
     return render_template("search-results.html",
                            name=name,
                            image_urls=image_urls,
@@ -203,6 +203,46 @@ def search_nightlife():
                            search=search)
 
 
+@app.route('/tourist')
+def search_tourist():
+    """Return photo results from search + tourist attractions"""
+    search = request.args.get('locate')
+    name = search
+    image_urls = get_photos(search, "tourist attractions")
+    return render_template("search-results.html",
+                           name=name,
+                           image_urls=image_urls,
+                           search=search)
+
+
+@app.route('/shops')
+def search_shops():
+    """Return photo results from search + tourist attractions"""
+    search = request.args.get('locate')
+    name = search
+    image_urls = get_photos(search, "shops")
+    return render_template("search-results.html",
+                           name=name,
+                           image_urls=image_urls,
+                           search=search)
+    
+
+def get_yelp_access_token():
+    """Get yelp business api access token"""
+    app_id = '1aZ_5OVCRb0P7v3unYNIqA'
+    app_secret = 'gXJgDy4eUkJZB4MM3vBWX1w7SHaeRiHGNhcL3cIv48wE9AFG8eT4IYPAtMZ5vOJm'
+
+    data = {'grant_type': 'client_credentials',
+            'client_id': app_id,
+            'client_secret': app_secret}
+
+    token = requests.post('https://api.yelp.com/oauth2/token', data=data)
+
+    access_token = token.json()['access_token']
+
+    return access_token
+
+
 @app.route('/photo-info/<int:photo_id>')
 def get_photo_info(photo_id):
     """Returns photo and additional information page"""
@@ -222,16 +262,20 @@ def get_photo_info(photo_id):
     # use yelp api to search business info from lat/lng data
     url = 'https://api.yelp.com/v3/businesses/search'
     headers = {'Authorization': 'bearer %s' % access_token}
-    params = {'limit': 1, 'sort_by': 'rating', 'radius': 40000, 'latitude': lat, 'longitude': lng}
+    params = {'limit': 1, 'sort_by': 'distance', 'radius': 10000, 'location': address}
 
     resp = requests.get(url=url, params=params, headers=headers)
     # get result in json format
     result = resp.json()['businesses']
+
     if len(result) == 0:
         yelplink = "No yelp data available"
     else:
         yelplink = result[0]['url']
-
+    yelprating = result[0]['rating']
+    yelpname = result[0]['name']
+    print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    print result
     return render_template("photo-info.html",
                            photo_id=photo_id,
                            img_src=img_src,
@@ -239,6 +283,8 @@ def get_photo_info(photo_id):
                            lat=lat,
                            lng=lng,
                            yelplink=yelplink,
+                           yelprating=yelprating,
+                           yelpname=yelpname,
                            address=address,
                            google_maps_api_key=google_maps_api_key
                            )
@@ -279,22 +325,6 @@ def logout():
     return redirect("/")
 
 
-def get_yelp_access_token():
-    """Get yelp business api access token"""
-    app_id = '1aZ_5OVCRb0P7v3unYNIqA'
-    app_secret = 'gXJgDy4eUkJZB4MM3vBWX1w7SHaeRiHGNhcL3cIv48wE9AFG8eT4IYPAtMZ5vOJm'
-
-    data = {'grant_type': 'client_credentials',
-            'client_id': app_id,
-            'client_secret': app_secret}
-
-    token = requests.post('https://api.yelp.com/oauth2/token', data=data)
-
-    access_token = token.json()['access_token']
-
-    return access_token
-
-
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
     # that we invoke the DebugToolbarExtension
@@ -307,6 +337,5 @@ if __name__ == "__main__":
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    PORT = int(os.environ.get("PORT", 5001))
+    PORT = int(os.environ.get("PORT", 5000))
     app.run(port=PORT, host='0.0.0.0')
-
