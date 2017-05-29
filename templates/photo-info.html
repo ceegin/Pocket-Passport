@@ -6,9 +6,9 @@
 
 <img src="{{ img_src }}" class="photo-info"><br>
   {% if saved is none %}
-    <button type="button" id="bookmark">Bookmark!</button><br>
+    <button type="button" id="like">Like</button><br>
   {% elif saved is not none %}
-    <button type="button" id="unbookmark">Unbookmark</button><br>
+    <button type="button" id="unlike">Unlike</button><br>
   {% endif %}
 <script>
   src="https://code.jquery.com/jquery-3.2.1.js">
@@ -39,13 +39,13 @@
 
 <h3>Yelp location: {{ yelpname }}</h3>
 <h3>Yelp rating: {{ yelprating }}</h3>
-<a href="{{ yelplink }}" align="middle"><img src="http://static.wixstatic.com/media/f9853c_faa58d3f74b646e1bb90a948c52bac59~mv2.gif_srz_200_200_85_22_0.50_1.20_0.00_gif_srz" align="middle"></a>
+<a href="{{ yelplink }}" ><img src="http://static.wixstatic.com/media/f9853c_faa58d3f74b646e1bb90a948c52bac59~mv2.gif_srz_200_200_85_22_0.50_1.20_0.00_gif_srz"></a>
 
 
 <script>
     function likeButton() {
-        $("button#bookmark").replaceWith('<button type="button" id="unbookmark">Unbookmark</button>');
-         $("button#unbookmark").on("click", removePic)
+        $("button#like").replaceWith('<button type="button" id="unlike">Unlike</button>');
+         $("button#unlike").on("click", removePic)
     }
     function savePic(evt) {
         
