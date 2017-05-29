@@ -110,7 +110,6 @@ def search_city():
 
     search = request.args.get('location')
     name = search
-
     return render_template("categories.html",
                            name=name,
                            search=search
@@ -122,9 +121,9 @@ def search_food():
     """Return photo results from location search + food"""
     search = request.args.get('locate')
     name = search
-
     # returns search location plus the tags
     image_urls = get_photos(search, "food, restaurants")
+
     return render_template("search-results.html",
                            name=name,
                            image_urls=image_urls,
@@ -225,7 +224,7 @@ def search_shops():
                            name=name,
                            image_urls=image_urls,
                            search=search)
-    
+
 
 def get_yelp_access_token():
     """Get yelp business api access token"""
@@ -334,6 +333,8 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     DebugToolbarExtension(app)
+
+    DEBUG_TB_INTERCEPT_REDIRECTS = False
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

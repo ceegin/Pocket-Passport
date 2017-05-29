@@ -4,7 +4,7 @@
 {% if name is not none %}
 
 
-  <h3>{{ name }}</h3> 
+    <h3>{{ name }}</h3> 
       {% for photo_id, url, photo in image_urls %}
         <a href="/photo-info/{{ photo_id}}">
         <img src="{{ photo }}" id="{{ photo_id }}">
@@ -13,23 +13,6 @@
 
       {% endfor %}
 
-<div>
-   <ul class="pagination">
-        <li>
-            <a href="#">Previous</a>
-        </li>
-        <li><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li>
-            <a href="#">Next</a>
-        </li>
-    </ul>
-</div>
-
-     
 {% else %}
   <h3> Sorry, {{ search }} did not return any results. Please try another search.</h3>
 {% endif %}

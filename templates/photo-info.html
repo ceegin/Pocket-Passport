@@ -37,7 +37,7 @@
 </div>
 
 
-<h3>Yelp location: {{ yelpname }}</h3>
+<h3>Nearby business: {{ yelpname }}</h3>
 <h3>Yelp rating: {{ yelprating }}</h3>
 <a href="{{ yelplink }}" ><img src="http://static.wixstatic.com/media/f9853c_faa58d3f74b646e1bb90a948c52bac59~mv2.gif_srz_200_200_85_22_0.50_1.20_0.00_gif_srz"></a>
 
@@ -75,7 +75,6 @@
            );
   }
   $("button#unlike").on("click", removePic)
-
 // using GoogleMaps given code 
 function initMap() {
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -83,10 +82,8 @@ function initMap() {
       center: {lat: {{ lat }}, lng: {{ lng }}},
       zoom: 13
     });
-
     new AutocompleteDirectionsHandler(map);
   }
-
   function AutocompleteDirectionsHandler(map) {
     this.map = map;
     this.originPlaceId = null;
@@ -98,25 +95,19 @@ function initMap() {
     this.directionsService = new google.maps.DirectionsService;
     this.directionsDisplay = new google.maps.DirectionsRenderer;
     this.directionsDisplay.setMap(map);
-
     var originAutocomplete = new google.maps.places.Autocomplete(
         originInput, {placeIdOnly: true});
     var destinationAutocomplete = new google.maps.places.Autocomplete(
         destinationInput, {placeIdOnly: true});
-
     this.setupClickListener('changemode-walking', 'WALKING');
     this.setupClickListener('changemode-transit', 'TRANSIT');
     this.setupClickListener('changemode-driving', 'DRIVING');
-
     this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
     this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
-
     this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originInput);
     this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(destinationInput);
     this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(modeSelector);
   }
-
-
   AutocompleteDirectionsHandler.prototype.setupClickListener = function(id, mode) {
     var radioButton = document.getElementById(id);
     var me = this;
@@ -125,7 +116,6 @@ function initMap() {
       me.route();
     });
   };
-
   AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(autocomplete, mode) {
     var me = this;
     autocomplete.bindTo('bounds', this.map);
@@ -142,15 +132,12 @@ function initMap() {
       }
       me.route();
     });
-
   };
-
   AutocompleteDirectionsHandler.prototype.route = function() {
     if (!this.originPlaceId || !this.destinationPlaceId) {
       return;
     }
     var me = this;
-
     this.directionsService.route({
       origin: {'placeId': this.originPlaceId},
       destination: {'placeId': this.destinationPlaceId},
@@ -163,7 +150,6 @@ function initMap() {
       }
     });
   };
-
 </script>
 
 <script async defer
