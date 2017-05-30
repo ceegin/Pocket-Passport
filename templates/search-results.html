@@ -10,9 +10,46 @@
         <img src="{{ photo }}" id="{{ photo_id }}">
       <a href="{{ url }}">Photo Source</a><br><br>
       </a>
-
+      {% if saved is none %}
+    <button type="button" id="like">Like</button><br>
+  {% elif saved is not none %}
+    <button type="button" id="unlike">Unlike</button><br>
+  {% endif %}
       {% endfor %}
 
+<script>
+    function likeButton() {
+        $("button#like").replaceWith('<button type="button" id="unlike">Unlike</button>');
+         $("button#unlike").on("click", removePic)
+    }
+    function savePic(evt) {
+        
+        var photoInfo = {
+            "src": $("img.photo-info").attr("src"),
+            "id": $("h2#photo-id").html()
+        };
+        console.log(photoInfo);
+        $.post("/save-pic",
+               photoInfo,
+               likeButton
+               );
+        }
+     $("button#like").on("click", savePic)
+  function unLikeButton() {
+    $("button#unlike").replaceWith('<button type="button" id="like">Like</button>');
+    $("button#like").on("click", savePic)
+  }
+  function removePic(evt) {
+    console.log('in removePic function')
+    var photoId = {
+      "id": $("h2#photo-id").html()
+    };
+    $.post("/remove-pic",
+           photoId,
+           unLikeButton
+           );
+  }
+  $("button#unlike").on("click", removePic)
 {% else %}
   <h3> Sorry, {{ search }} did not return any results. Please try another search.</h3>
 {% endif %}

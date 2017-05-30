@@ -332,9 +332,9 @@ if __name__ == "__main__":
 
     connect_to_db(app)
 
-    DebugToolbarExtension(app)
+    # DebugToolbarExtension(app)
 
-    DEBUG_TB_INTERCEPT_REDIRECTS = False
+    # DEBUG_TB_INTERCEPT_REDIRECTS = False
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

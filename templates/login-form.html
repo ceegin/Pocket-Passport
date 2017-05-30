@@ -28,21 +28,6 @@
               <button type="submit" class="btn btn-default">Submit</button>
             </form>
 
-        <script>
-    $(function(){
-       $('loginform').on('submit', function(e){
-            e.preventDefault();
-            $.ajax({
-                url: "/login",
-                type: "POST",
-                data: $('loginform').serialize(),
-                success: function(data){
-                    alert("Successfully submitted.")
-                }
-            });
-       }); 
-    });
-</script>
         </div>
                 
             </div>
