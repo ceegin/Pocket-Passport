@@ -32,7 +32,7 @@
         var imageUrl = thisButton.attr('imageurl');
 
         var searchResult = {
-            "src": imageUrl,
+            "src": $("img.search-result").attr("src"),
             "id": $(this).attr("value")
         };
 
@@ -54,7 +54,7 @@
     var thisButton = $(this);
         var imageUrl = thisButton.attr('imageurl');
     var searchResult = {
-            "src": imageUrl,
+            "src": $("img.search-result").attr("src"),
             "id": $(this).attr("value")
     };
     $.post("/remove-pic",
