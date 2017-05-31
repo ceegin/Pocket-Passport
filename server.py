@@ -147,9 +147,16 @@ def search_landmarks():
     search = request.args.get('locate')
     name = search
     image_urls = get_photos(search, "landmarks")
+    index = 0
     for image in image_urls:
-        saved = check_saved(image[0])
-        image.append(saved)
+
+        if check_saved(image_urls[index][0]):
+            image.append("unlike")
+            index += 1
+        else:
+            image.append("like")
+            index += 1
+
     return render_template("search-results.html",
                            name=name,
                            image_urls=image_urls,
@@ -163,9 +170,16 @@ def search_fashion():
     search = request.args.get('locate')
     name = search
     image_urls = get_photos(search, "style, fashion")
+    index = 0
     for image in image_urls:
-        saved = check_saved(image[0])
-        image.append(saved)
+
+        if check_saved(image_urls[index][0]):
+            image.append("unlike")
+            index += 1
+        else:
+            image.append("like")
+            index += 1
+
     return render_template("search-results.html",
                            name=name,
                            image_urls=image_urls,
@@ -179,9 +193,16 @@ def search_coffee():
     search = request.args.get('locate')
     name = search
     image_urls = get_photos(search, "coffee, cafe")
+    index = 0
     for image in image_urls:
-        saved = check_saved(image[0])
-        image.append(saved)
+
+        if check_saved(image_urls[index][0]):
+            image.append("unlike")
+            index += 1
+        else:
+            image.append("like")
+            index += 1
+
     return render_template("search-results.html",
                            name=name,
                            image_urls=image_urls,
@@ -195,10 +216,21 @@ def search_hikes():
     search = request.args.get('locate')
     name = search
     image_urls = get_photos(search, "hiking, trails")
+    index = 0
+    for image in image_urls:
+
+        if check_saved(image_urls[index][0]):
+            image.append("unlike")
+            index += 1
+        else:
+            image.append("like")
+            index += 1
+
     return render_template("search-results.html",
                            name=name,
                            image_urls=image_urls,
-                           search=search)
+                           search=search
+                           )
 
 
 @app.route('/bars')
@@ -207,10 +239,21 @@ def search_bars():
     search = request.args.get('locate')
     name = search
     image_urls = get_photos(search, "bars, clubs")
+    index = 0
+    for image in image_urls:
+
+        if check_saved(image_urls[index][0]):
+            image.append("unlike")
+            index += 1
+        else:
+            image.append("like")
+            index += 1
+
     return render_template("search-results.html",
                            name=name,
                            image_urls=image_urls,
-                           search=search)
+                           search=search
+                           )
 
 
 @app.route('/nightlife')
@@ -219,10 +262,21 @@ def search_nightlife():
     search = request.args.get('locate')
     name = search
     image_urls = get_photos(search, "nightlife")
+    index = 0
+    for image in image_urls:
+
+        if check_saved(image_urls[index][0]):
+            image.append("unlike")
+            index += 1
+        else:
+            image.append("like")
+            index += 1
+
     return render_template("search-results.html",
                            name=name,
                            image_urls=image_urls,
-                           search=search)
+                           search=search
+                           )
 
 
 @app.route('/tourist')
@@ -231,10 +285,21 @@ def search_tourist():
     search = request.args.get('locate')
     name = search
     image_urls = get_photos(search, "tourist attractions")
+    index = 0
+    for image in image_urls:
+
+        if check_saved(image_urls[index][0]):
+            image.append("unlike")
+            index += 1
+        else:
+            image.append("like")
+            index += 1
+
     return render_template("search-results.html",
                            name=name,
                            image_urls=image_urls,
-                           search=search)
+                           search=search
+                           )
 
 
 @app.route('/shops')
@@ -243,10 +308,21 @@ def search_shops():
     search = request.args.get('locate')
     name = search
     image_urls = get_photos(search, "shops")
+    index = 0
+    for image in image_urls:
+
+        if check_saved(image_urls[index][0]):
+            image.append("unlike")
+            index += 1
+        else:
+            image.append("like")
+            index += 1
+
     return render_template("search-results.html",
                            name=name,
                            image_urls=image_urls,
-                           search=search)
+                           search=search
+                           )
 
 
 def get_yelp_access_token():
