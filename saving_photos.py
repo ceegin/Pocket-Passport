@@ -34,11 +34,14 @@ def save_pic(img_src, photo_id, user_id):
     """Save photo to database."""
 
     # pic = SavedPhoto(user_id=user_id, photo_id=photo_id)
-
+    print user_id
     #checks if photo is there, if not add to the database
     if not SavedPhoto.query.filter(SavedPhoto.photo_id == photo_id).all():
+        # print "doesn't exist"
         new_pic = SavedPhoto(user_id=int(user_id), img_src=img_src, photo_id=photo_id)
         db.session.add(new_pic)
+    new_pic = None
+    # print new_pic
 
     # db.session.add(pic)
     db.session.commit()

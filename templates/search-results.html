@@ -5,51 +5,65 @@
 
 
     <h3>{{ name }}</h3> 
-      {% for photo_id, url, photo in image_urls %}
+      {% for photo_id, url, photo, saved in image_urls %}
         <a href="/photo-info/{{ photo_id}}">
-        <img src="{{ photo }}" id="{{ photo_id }}">
-      <a href="{{ url }}">Photo Source</a><br><br>
-      </a>
-      {% if saved is none %}
-    <button type="button" id="like">Like</button><br>
-  {% elif saved is not none %}
-    <button type="button" id="unlike">Unlike</button><br>
-  {% endif %}
+        <img src="{{ photo }}" class="search-result" id="{{ photo_id }}">
+        <a href="{{ url }}">Photo Source</a><br>
+        </a>
+        {% if saved == 'like' %}
+          <button type="button" class='like' value="{{ photo_id }}" imageurl="{{ url }}">Like</button><br>
+        {% elif saved == 'unlike' %}
+          <button type="button" class="unlike" value="{{ photo_id }}" imageurl="{{ url }}">Unlike</button><br><br>
+        {% endif %}
       {% endfor %}
 
 <script>
-    function likeButton() {
-        $("button#like").replaceWith('<button type="button" id="unlike">Unlike</button>');
-         $("button#unlike").on("click", removePic)
+    function likeButton(someButton) {
+        console.log(someButton);
+        someButton.text("unlike");
+
+
     }
     function savePic(evt) {
-        
-        var photoInfo = {
-            "src": $("img.photo-info").attr("src"),
-            "id": $("h2#photo-id").html()
+        console.log("test..............................")
+      
+        // console.log(searchResult);
+        var thisButton = $(this);
+        var imageUrl = thisButton.attr('imageurl');
+
+        var searchResult = {
+            "src": imageUrl,
+            "id": $(this).attr("value")
         };
-        console.log(photoInfo);
+
         $.post("/save-pic",
-               photoInfo,
-               likeButton
+               searchResult,
+               likeButton(thisButton)
                );
+        // console.log($(this));
         }
-     $("button#like").on("click", savePic)
+      console.log('hello');
+     $("button.like").on("click", savePic);
+
   function unLikeButton() {
-    $("button#unlike").replaceWith('<button type="button" id="like">Like</button>');
-    $("button#like").on("click", savePic)
+    $("button.unlike").replaceWith('<button type="button" class="like">Like</button>');
+    $("button.like").on("click", savePic)
   }
   function removePic(evt) {
-    console.log('in removePic function')
-    var photoId = {
-      "id": $("h2#photo-id").html()
+    // console.log('in removePic function')
+    var thisButton = $(this);
+        var imageUrl = thisButton.attr('imageurl');
+    var searchResult = {
+            "src": imageUrl,
+            "id": $(this).attr("value")
     };
     $.post("/remove-pic",
-           photoId,
-           unLikeButton
+           searchResult,
+           unLikeButton(thisButton)
            );
   }
-  $("button#unlike").on("click", removePic)
+  $("button.unlike").on("click", removePic)
+  </script>
 {% else %}
   <h3> Sorry, {{ search }} did not return any results. Please try another search.</h3>
 {% endif %}

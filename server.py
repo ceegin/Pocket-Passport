@@ -1,6 +1,6 @@
 from flask import (Flask, render_template, redirect, flash, session, request)
 
-from flask_debugtoolbar import DebugToolbarExtension
+# from flask_debugtoolbar import DebugToolbarExtension
 
 from jinja2 import StrictUndefined
 
@@ -19,6 +19,8 @@ google_maps_api_key = os.environ['GOOGLE_KEY']
 from geocode_functions import reverse_geo_location
 
 app = Flask(__name__)
+
+saved = None
 
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = "ABC"
@@ -107,7 +109,6 @@ def user_profile(user_id):
 @app.route('/search-results')
 def search_city():
     """Return categories after location search."""
-
     search = request.args.get('location')
     name = search
     return render_template("categories.html",
@@ -123,11 +124,21 @@ def search_food():
     name = search
     # returns search location plus the tags
     image_urls = get_photos(search, "food, restaurants")
+    index = 0
+    for image in image_urls:
+
+        if check_saved(image_urls[index][0]):
+            image.append("unlike")
+            index += 1
+        else:
+            image.append("like")
+            index += 1
 
     return render_template("search-results.html",
                            name=name,
                            image_urls=image_urls,
-                           search=search)
+                           search=search
+                           )
 
 
 @app.route('/landmarks')
@@ -136,10 +147,14 @@ def search_landmarks():
     search = request.args.get('locate')
     name = search
     image_urls = get_photos(search, "landmarks")
+    for image in image_urls:
+        saved = check_saved(image[0])
+        image.append(saved)
     return render_template("search-results.html",
                            name=name,
                            image_urls=image_urls,
-                           search=search)
+                           search=search
+                           )
 
 
 @app.route('/fashion')
@@ -148,10 +163,14 @@ def search_fashion():
     search = request.args.get('locate')
     name = search
     image_urls = get_photos(search, "style, fashion")
+    for image in image_urls:
+        saved = check_saved(image[0])
+        image.append(saved)
     return render_template("search-results.html",
                            name=name,
                            image_urls=image_urls,
-                           search=search)
+                           search=search
+                           )
 
 
 @app.route('/coffee')
@@ -160,10 +179,14 @@ def search_coffee():
     search = request.args.get('locate')
     name = search
     image_urls = get_photos(search, "coffee, cafe")
+    for image in image_urls:
+        saved = check_saved(image[0])
+        image.append(saved)
     return render_template("search-results.html",
                            name=name,
                            image_urls=image_urls,
-                           search=search)
+                           search=search
+                           )
 
 
 @app.route('/hikes')
@@ -247,6 +270,8 @@ def get_photo_info(photo_id):
     """Returns photo and additional information page"""
     # check if photo is saved to the user's profile
     saved = check_saved(photo_id)
+    print "aaaaaaaaaaaaaaaaaaaaaaa"
+    print saved
     # use flickr api getinfo to get url of photo
     img_src = get_url(photo_id)
     # use flickr api getlocation to get location data of photo
@@ -298,7 +323,6 @@ def save_to_db():
     user_id = session['user_id']
 
     save_pic(img_src=img_src, photo_id=photo_id, user_id=int(user_id))
-
     return "OK"
 
 
