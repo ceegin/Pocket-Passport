@@ -4,6 +4,7 @@ from server import app
 import flickr_functions
 from model import db, connect_to_db
 
+
 class ServerTests(unittest.TestCase):
     """Flask tests for server."""
 
@@ -14,14 +15,14 @@ class ServerTests(unittest.TestCase):
     def test_homepage(self):
         result = self.client.get("/")
         self.assertEqual(result.status_code, 200)
-        self.assertIn("guide", result.data)
 
     def test_categories(self):
         result = self.client.get("/search-results")
         self.assertIn("landmarks", result.data)
 
-    def test_photo_details(self):
-        pass
+    def test_photo_info(self):
+        result = self.client.get("/photo-info")
+        self.assertEqual(result.status_code, 200)
 
     def test_user_login(self):
         """User login page test."""
