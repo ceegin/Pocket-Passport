@@ -1,28 +1,40 @@
+
 {% extends 'base.html' %}
 {% block body %}
 
 {% if name is not none %}
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/masonry/3.1.5/masonry.pkgd.min.js"></script>
+<script>
+$(function(){
+    
+    var m = new Masonry($('.grid').get()[0], {
+        itemSelector: ".thumbnail"
+    });
 
-
+});</script>
+<div class="container">
+        
     <h3>{{ name }}</h3> 
+    <div class="row grid">
       {% for photo_id, url, photo, saved in image_urls %}
-        <a href="/photo-info/{{ photo_id}}">
-        <img src="{{ photo }}" class="search-result" id="{{ photo_id }}">
-        <a href="{{ url }}">Photo Source</a><br>
-        </a>
+          <div class="col-xs-4 thumbnail">
+            <a href="/photo-info/{{ photo_id}}">
+            <img src="{{ photo }}" class="search-result img-responsive" id="{{ photo_id }}">
+            <a href="{{ url }}">Photo Source</a><br>
+            </a>
         {% if saved == 'like' %}
-          <button type="button" class='like' value="{{ photo_id }}" imageurl="{{ url }}">Like</button><br>
+          <button type="button" class='like' value="{{ photo_id }}" imageurl="{{ url }}">Like</button>
         {% elif saved == 'unlike' %}
-          <button type="button" class="unlike" value="{{ photo_id }}" imageurl="{{ url }}">Unlike</button><br><br>
+          <button type="button" class="unlike" value="{{ photo_id }}" imageurl="{{ url }}">Unlike</button>
         {% endif %}
+    </div>
       {% endfor %}
-
+   </div>
+  </div>
 <script>
     function likeButton(someButton) {
         console.log(someButton);
         someButton.text("unlike");
-
-
     }
     function savePic(evt) {
         console.log("test..............................")
@@ -30,12 +42,10 @@
         // console.log(searchResult);
         var thisButton = $(this);
         var imageUrl = thisButton.attr('imageurl');
-
         var searchResult = {
-            "src": $("img.search-esult").attr("src"),
+            "src": imageUrl,
             "id": $(this).attr("value")
         };
-
         $.post("/save-pic",
                searchResult,
                likeButton(thisButton)
@@ -44,7 +54,6 @@
         }
       console.log('hello');
      $("button.like").on("click", savePic);
-
   function unLikeButton() {
     $("button.unlike").replaceWith('<button type="button" class="like">Like</button>');
     $("button.like").on("click", savePic)
@@ -54,7 +63,7 @@
     var thisButton = $(this);
         var imageUrl = thisButton.attr('imageurl');
     var searchResult = {
-            "src": $("img.search-result").attr("src"),
+            "src": imageUrl,
             "id": $(this).attr("value")
     };
     $.post("/remove-pic",
@@ -68,3 +77,4 @@
   <h3> Sorry, {{ search }} did not return any results. Please try another search.</h3>
 {% endif %}
 {% endblock %}
+
