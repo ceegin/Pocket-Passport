@@ -91,9 +91,16 @@ h1, h2, h3 {
   margin: auto;
 }
 
-
-
 .yelpicon {
   text-align: center;
   margin: auto;
 }
+
+.category-btns {
+  width: 200px;
+  width: 100%;
+  height: 100%;
+  height: 200px;
+  border: none;
+}
+
