@@ -3,50 +3,55 @@
 
   <h1 id="CityName" name="CityName" >{{ name }}</h1>
 
-
+<div class="container">
+    <div class="row">
+        <div class="col-xs-4">
 <form action="/landmarks">
 <input type ="hidden" name ="locate" value = "{{name}}">
 <button type="submit" id="landmarks">Landmarks</button>
-</form>
-
+</form></div>
+        <div class="col-xs-4">
 <form action="/tourist">
 <input type="hidden" name="locate" value = "{{name}}">
 <button type="submit" id="tourist">Tourist Attractions</button>
-</form>
+</form></div>
+<div class="col-xs-4"
 
 <form action="/food">
 <input type ="hidden" name ="locate" value = "{{name}}">
 <button type="submit" id="food">Food</button>
-</form>
-
+</form></div>
+<div class="col-xs-4"
 <form action="/coffee">
 <input type ="hidden" name ="locate" value = "{{name}}">
 <button type="submit" id="coffee">Coffee Shops</button>
-</form>
-
+</form></div>
+<div class="col-xs-4"
 <form action="/bars">
 <input type ="hidden" name ="locate" value = "{{name}}">
 <button type="submit" id="bars">Bars</button>
-</form>
-
+</form></div>
+<div class="col-xs-4"
 <form action="/nightlife">
 <input type ="hidden" name ="locate" value = "{{name}}">
 <button type="submit" id="nightlife">Nightlife</button>
-</form>
-
+</form></div>
+<div class="col-xs-4"
 <form action="/fashion">
 <input type ="hidden" name ="locate" value = "{{name}}">
 <button type="submit" id="fashion">Fashion</button>
-</form>
-
+</form></div>
+<div class="col-xs-4"
 <form action="/shops">
 <input type ="hidden" name ="locate" value = "{{name}}">
 <button type="submit" id="shops">Shops</button>
 </form>
-
+</div>
+<div class="col-xs-4"
 <form action="/hikes">
 <input type ="hidden" name ="locate" value = "{{name}}">
 <button type="submit" id="hikes">Hikes</button>
-</form>
-
+</form></div>
+</div>
+</div>
 {% endblock %}

@@ -3,6 +3,8 @@ h1, h2, h3 {
     font-family: 'Bubbler One', sans-serif;
 }
 
+
+
  #map {
         height: 400px;
         width: 70%;
@@ -79,3 +81,19 @@ h1, h2, h3 {
     width: 100%;
 }
 
+.photo-info {
+   text-align: center;
+   margin: 0;
+}
+
+.container-fluid#photopage {
+  text-align: center;
+  margin: auto;
+}
+
+
+
+.yelpicon {
+  text-align: center;
+  margin: auto;
+}

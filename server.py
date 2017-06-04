@@ -110,7 +110,7 @@ def user_profile(user_id):
 def search_city():
     """Return categories after location search."""
     search = request.args.get('location')
-    name = search
+    name = search.capitalize()
     return render_template("categories.html",
                            name=name,
                            search=search
@@ -121,7 +121,7 @@ def search_city():
 def search_food():
     """Return photo results from location search + food"""
     search = request.args.get('locate')
-    name = search
+    name = search.capitalize()
     # returns search location plus the tags
     image_urls = get_photos(search, "food, restaurants")
     index = 0
@@ -346,8 +346,6 @@ def get_photo_info(photo_id):
     """Returns photo and additional information page"""
     # check if photo is saved to the user's profile
     saved = check_saved(photo_id)
-    print "aaaaaaaaaaaaaaaaaaaaaaa"
-    print saved
     # use flickr api getinfo to get url of photo
     img_src = get_url(photo_id)
     # use flickr api getlocation to get location data of photo
@@ -374,8 +372,7 @@ def get_photo_info(photo_id):
         yelplink = result[0]['url']
     yelprating = result[0]['rating']
     yelpname = result[0]['name']
-    print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-    print result
+
     return render_template("photo-info.html",
                            photo_id=photo_id,
                            img_src=img_src,

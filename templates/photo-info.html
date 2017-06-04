@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block body %}
 
-
+<div class="container-fluid" id="photopage">
 <h2 id="photo-id">{{ photo_id }}</h2>
 
 <img src="{{ img_src }}" class="photo-info"><br>
@@ -13,6 +13,11 @@
 <script>
   src="https://code.jquery.com/jquery-3.2.1.js">
 </script>
+
+<h3>Nearby business: {{ yelpname }}</h3>
+<h3>Yelp rating: {{ yelprating }}</h3>
+<h3><a href="{{ yelplink }}"><img src="http://static.wixstatic.com/media/f9853c_faa58d3f74b646e1bb90a948c52bac59~mv2.gif_srz_200_200_85_22_0.50_1.20_0.00_gif_srz" class="yelpicon"></a></h3>
+
 
 <h3>Location: <a href="http://maps.google.com/?q={{ address }} ">{{ address }}</a></h3>
 
@@ -35,12 +40,7 @@
 
 <div id="map"></div><br><br>
 </div>
-
-
-<h3>Nearby business: {{ yelpname }}</h3>
-<h3>Yelp rating: {{ yelprating }}</h3>
-<a href="{{ yelplink }}" ><img src="http://static.wixstatic.com/media/f9853c_faa58d3f74b646e1bb90a948c52bac59~mv2.gif_srz_200_200_85_22_0.50_1.20_0.00_gif_srz"></a>
-
+</div>
 
 <script>
     function likeButton() {

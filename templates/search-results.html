@@ -23,9 +23,9 @@ $(function(){
             <a href="{{ url }}">Photo Source</a><br>
             </a>
         {% if saved == 'like' %}
-          <button type="button" class='like' value="{{ photo_id }}" imageurl="{{ url }}">Like</button>
+          <button type="button" class="like" value="{{ photo_id }}" imageurl="{{ photo }}">Like</button>
         {% elif saved == 'unlike' %}
-          <button type="button" class="unlike" value="{{ photo_id }}" imageurl="{{ url }}">Unlike</button>
+          <button type="button" class="unlike" value="{{ photo_id }}" imageurl="{{ photo }}">Unlike</button>
         {% endif %}
     </div>
       {% endfor %}

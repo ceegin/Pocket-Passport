@@ -1,12 +1,57 @@
 {% extends 'base.html'%}
 {% block body %}
 
+<div class="bgimage">
+<!-- <p><a href="/register">Create an account</a></p> -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<div class="left-align"><button data-toggle="modal" data-target="#squarespaceModal" class="btn btn-primary left-block">Register</button></div>
 
-<p><a href="/register">Create an account</a></p>
 
+<!-- line modal -->
+<div class="modal fade" id="squarespaceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h3 class="modal-title" id="lineModalLabel">User Registration</h3>
+        </div>
+        <div class="modal-body">
+            
+            <!-- content goes here -->
+            <form id='registerform' action='/register' method='POST'>
+              <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" name="email"class="form-control" id="email" placeholder="Enter email">
+              </div>
+              <div class="form-group">
+                <label for="passpword">Password</label>
+                <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+              </div>
+                <div class="form-group">
+              <label for="first_name">First name</label>
+                <input type="first_name" name="first_name"class="form-control" id="first_name" placeholder="Enter first name">
+            </div>
+              <div class="form-group">
+              <label for="last_name">Last name</label>
+                <input type="last_name" name="last_name"class="form-control" id="first_name" placeholder="Enter last name">
+            </div>
+
+              <button type="submit" class="btn btn-default">Submit</button>
+       
+            </form>
+
+        </div>
+                
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
 
 <br><br>
 <h1><strong>Pocket Passport:</strong> Your Travel Photo Guide</h1>
-<br><br>
+
+</div>
+
 
 {% endblock %}

@@ -15,16 +15,16 @@
 </head>
 
 <body>
-
+ <nav class="navbar navbar-default">
         <a href="/">Pocket Passport</a>
     
    
  {% if 'user_id' in session %}
 
         <form action="/search-results">
-          <div>
+      
             <input type="text" id="location" name="location" placeholder="City name">
-          </div>
+          
           <button type="submit" id="location-search-button" class="btn btn-default">Search location</button>
         </form>
       {% endif %}
@@ -33,6 +33,7 @@
 {% else %}
     <a href="/login">Login</a>
 {% endif %}
+</nav>
 
   <hr>
   {% with messages = get_flashed_messages() %}
