@@ -1,16 +1,26 @@
 {% extends 'base.html' %}
 {% block body %}
 
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/masonry/3.1.5/masonry.pkgd.min.js"></script>
+<script>
+$(function(){
+    
+    var m = new Masonry($('.grid').get()[0], {
+        itemSelector: ".thumbnail"
+    });
 
-  
+});</script>
+  <div class="container">
 
   <h1>Welcome back {{ user.first_name }}!</h1>
-
+<div class="row grid">
 {% for users_saved_pics in users_saved_pics %}
-<div>
-  <a href="/photo-info/{{ users_saved_pics['photo_id'] }}">
-    <img src="{{ users_saved_pics['img_src'] }}" 
-    id="{{ users_saved_pics['photo_id'] }}"></a>
+    <div class="col-xs-4 thumbnail">
+        <a href="/photo-info/{{ users_saved_pics['photo_id'] }}">
+        <img src="{{ users_saved_pics['img_src'] }}" 
+        id="{{ users_saved_pics['photo_id'] }}"></a>
 </div>
 {% endfor %}
+</div>
+  </div>
 {% endblock %}

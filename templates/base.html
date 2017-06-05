@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pocket Passport</title>
      <link rel="stylesheet" type="text/css" href="/static/style.css">
      <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
@@ -15,25 +16,33 @@
 </head>
 
 <body>
- <nav class="navbar navbar-default">
-        <a href="/">Pocket Passport</a>
-    
+ <nav class="navbar navbar-light bg-faded">
+
+        <a class="navbar-brand" href="/">Pocket Passport</a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
    
  {% if 'user_id' in session %}
 
-        <form action="/search-results">
+        <form class="form-inline my-2 my-lg-0" action="/search-results">
       
-            <input type="text" id="location" name="location" placeholder="City name">
+            <input class="form-control mr-sm-2" type="text" id="location" name="location" placeholder="City name">
           
-          <button type="submit" id="location-search-button" class="btn btn-default">Search location</button>
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="location-search-button" class="btn btn-default navbar-btn">Search location</button>
         </form>
       {% endif %}
+       <ul class="nav navbar-nav navbar-right">
+        <li>
+      
 {% if "user_id" in session %}
     <a href="/logout">Logout</a>
 {% else %}
     <a href="/login">Login</a>
+    </li>
+  </ul>
 {% endif %}
+</div>
 </nav>
+
 
   <hr>
   {% with messages = get_flashed_messages() %}
