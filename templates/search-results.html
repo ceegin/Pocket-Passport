@@ -20,7 +20,6 @@ $(function(){
           <div class="col-xs-4 thumbnail">
             <a href="/photo-info/{{ photo_id}}">
             <img src="{{ photo }}" class="search-result" id="{{ photo_id }}">
-            <a href="{{ url }}">Photo Source</a><br>
             </a>
         {% if saved == 'like' %}
           <button type="button" class="like" value="{{ photo_id }}" imageurl="{{ photo }}">Like</button>
