@@ -22,9 +22,9 @@ $(function(){
             <img src="{{ photo }}" class="search-result" id="{{ photo_id }}">
             </a>
         {% if saved == 'like' %}
-          <button type="button" class="like" value="{{ photo_id }}" imageurl="{{ photo }}">Like</button>
+          <button type="button" class="btn like" value="{{ photo_id }}" imageurl="{{ photo }}">Like</button>
         {% elif saved == 'unlike' %}
-          <button type="button" class="unlike" value="{{ photo_id }}" imageurl="{{ photo }}">Unlike</button>
+          <button type="button" class="btn unlike" value="{{ photo_id }}" imageurl="{{ photo }}">Unlike</button>
         {% endif %}
     </div>
       {% endfor %}

@@ -6,9 +6,9 @@
 
 <img src="{{ img_src }}" class="photo-info"><br>
   {% if saved is none %}
-    <button type="button" id="like">Like</button><br>
+    <button type="button" id="like" class="btn">Like</button><br>
   {% elif saved is not none %}
-    <button type="button" id="unlike">Unlike</button><br>
+    <button type="button" id="unlike" class="btn">Unlike</button><br>
   {% endif %}
 <script>
   src="https://code.jquery.com/jquery-3.2.1.js">
