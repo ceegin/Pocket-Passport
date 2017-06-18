@@ -18,24 +18,24 @@ Pocket Passport is a travel photo guide that allows users to find travel destina
 
 Users can save photos to their profile, view pictures based on different categories, and see Googlemaps and Yelp information. 
 
-The home page shows saved pictures
+The home page shows pictures previously saved by the user using a SQLalchemy database query.
 ![alt text](screenshots/pockethomepage.png) 
 
-After entering a location in the search bar, users can choose a category of pictures to view.
+After entering a location in the search bar, users can choose a category of pictures to view. 
 ![alt text](screenshots/categoriespic.png) 
 
-Users can then like or unlike pictures to save to their profile
+Users can then like or unlike pictures to save to their profile. Pictures are filtered to contain geodata.
 ![alt text](screenshots/likepics.png) 
 
-Click the picture to view more details
+Click the picture to view more details. The yelp location and rating are displayed by entering the latitude longitude data retrieved from Flickr, and reverse geocoding for a formatted address.
 ![alt text](screenshots/yelplocation.png) 
 
-See googlemaps location
-![alt text](screenshots/googlemapspic.png) "Googlemaps directions
+See googlemaps directions
+![alt text](screenshots/googlemapspic.png) 
 "
 ## <a name="improvements"></a>Future Improvements
 
-* I would like to add an infinite scroll/pagination 
+* Add an infinite scroll/pagination 
 * Expand the app to allow friends to share photos with each other and view profiles more easily
 * Add modals for pictures to pop up. 
 
@@ -69,7 +69,7 @@ Source your keys from your secrets.sh file into your virtual environment:
 source secrets.sh
 ```
 
-Set up the database:
+Set up the database
 
 ```
 python model.py
