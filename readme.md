@@ -5,8 +5,8 @@ Pocket Passport is a travel photo guide that allows users to find travel destina
 * [Technologies Used](#technologiesused)
 * [Features](#features)
 * [Possible Improvements](#improvements)
-* [Download](#download)
 * [Author](#author)
+* [Download](#download)
 
 ## <a name="technologiesused"></a>Technologies Used
 
@@ -38,6 +38,9 @@ See googlemaps location
 * I would like to add an infinite scroll/pagination 
 * Expand the app to allow friends to share photos with each other and view profiles more easily
 * Add modals for pictures to pop up. 
+
+## <a name="author"></a>Author
+Hello! My name is [Christina Gin](https://www.linkedin.com/in/christina-gin) and I am a software engineer. I received training from Hackbright Academy, an engineering bootcamp for women in San Francisco. Thanks for reading!
 
 ## <a name="download"></a>Download/Install
 Clone or fork this repo
@@ -81,5 +84,3 @@ python server.py
 You can now navigate to 'localhost:5000/' to access Pocket Passport
 
 
-## <a name="author"></a>Author
-Hello! My name is [Christina Gin](https://www.linkedin.com/in/christina-gin) and I am a software engineer. I received training from Hackbright Academy, an engineering bootcamp for women in San Francisco. Thanks for reading!
